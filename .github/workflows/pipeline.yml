@@ -52,4 +52,8 @@ jobs:
       - name: Push Docker Images to Docker Hub
         run: |
           docker push darshanzatakiya/sgp-ii:webapp-${{github.run_number}}
+<<<<<<< HEAD
           docker push darshanzatakiya/sgp-ii:webapp-latest
+=======
+          docker push darshanzatakiya/sgp-ii:webapp-latest
+>>>>>>> abe48ff77444326cc5844ab78714f2cf767a11fe
