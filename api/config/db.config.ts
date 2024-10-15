@@ -5,7 +5,7 @@ let database: Mongoose.Connection;
 
 export const connect = () => {
 
-    const url = process.env.MONGODB_URI;
+    const url = "mongodb://localhost:27017";
     console.log("from connect: process.env.MONGODB_URI :::",process.env.MONGODB_URI)
 
     if (database) {
