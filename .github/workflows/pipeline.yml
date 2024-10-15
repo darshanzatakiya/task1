@@ -51,8 +51,8 @@ jobs:
       # Push the Docker images to Docker Hub
       - name: Push Docker Images to Docker Hub
         run: |
-          docker push thiendang/devops-training-mern-docker-github-actions-cicd:webapp-${{github.run_number}}
-          docker push thiendang/devops-training-mern-docker-github-actions-cicd:webapp-latest
+          docker push darshanzatakiya/sgp-ii:webapp-${{github.run_number}}
+          docker push darshanzatakiya/sgp-ii:webapp-latest
 
       # This is the step that is deploying the application to Elastic Beanstalk.
       # - name: Deploy to Elastic Beanstalk
