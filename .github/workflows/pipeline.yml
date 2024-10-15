@@ -37,9 +37,9 @@ jobs:
 
       # Build a Docker image for the server application
       - name: Build Docker Image
-        # Build image with tag thiendang/devops-training-mern-docker-github-actions-cicd:api
+        # Build image with tag darshanzatakiya/sgp-ii:api
         run: |
-          docker build -t thiendang/devops-training-mern-docker-github-actions-cicd:webapp-${{github.run_number}} -t thiendang/devops-training-mern-docker-github-actions-cicd:webapp-latest .
+          docker build -t darshanzatakiya/sgp-ii:webapp-${{github.run_number}} -t darshanzatakiya/sgp-ii:webapp-latest .
 
       # Log in to Docker Hub using credentials from repository secrets
       - name: Log in to Docker Hub
@@ -53,15 +53,3 @@ jobs:
         run: |
           docker push darshanzatakiya/sgp-ii:webapp-${{github.run_number}}
           docker push darshanzatakiya/sgp-ii:webapp-latest
-
-      # This is the step that is deploying the application to Elastic Beanstalk.
-      # - name: Deploy to Elastic Beanstalk
-      #   uses: einaregilsson/beanstalk-deploy@v21
-      #   with:
-      #     aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     application_name: ${{ secrets.EB_APP_NAME }}
-      #     environment_name: ${{ secrets.EB_ENV_NAME }}
-      #     region: ${{ secrets.EB_REGION }}
-      #     version_label: "version_${{ github.run_number }}"
-      #     deployment_package: docker-compose.yaml
