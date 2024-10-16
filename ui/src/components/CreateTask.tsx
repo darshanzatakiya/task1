@@ -6,7 +6,7 @@ export default function CreateTask(props: any) {
   const { register, handleSubmit } = useForm();
 
   const taskService = new TaskService();
-
+  
   const onSubmit = (data: any, e: any) => {
     taskService.createTask(data).then((response) => {
       props.taskCreated();
@@ -66,3 +66,4 @@ export default function CreateTask(props: any) {
     </div>
   );
 }
+
