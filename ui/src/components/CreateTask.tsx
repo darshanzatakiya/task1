@@ -15,6 +15,7 @@ export default function CreateTask(props: any) {
   };
 
   return (
+    
     <div className="container">
       <div className="row">
         <div className="mx-auto col-10 col-md-8 col-lg-6">
@@ -24,6 +25,9 @@ export default function CreateTask(props: any) {
               <div className="row">
                 <div className="form-group mrgnbtm col-md-12">
                   <label htmlFor="exampleInputEmail1">Task</label>
+                  <div>
+                    
+                  </div>
                   <input
                     {...register('task')}
                     placeholder="Create a Task"
