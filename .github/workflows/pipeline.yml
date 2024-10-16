@@ -2,10 +2,18 @@
 name: Build and Deploy
 
 # Run the workflow when code is pushed to the main branch
+# on:
+#   push:
+#     branches:
+#       - mainon:
 on:
   push:
     branches:
-      - main
+      - main  # Change this to your target branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests to the main branch
+
 
 # Set environment variables
 env:
