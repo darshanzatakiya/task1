@@ -43,32 +43,46 @@ jobs:
           npm install
           npm run build
 
-       # Install AWS Tools for PowerShell
-       - name: Install AWS Tools for PowerShell
-       run: |
-         Install-Module -Name AWSPowerShell -Force -Scope CurrentUser
+# Set environment variables
+env:
+  AWS_REGION: eu-north-1  
+  ECR_REGISTRY: 637423323200.dkr.ecr.eu-north-1.amazonaws.com
+  ECR_REPOSITORY: webapp
 
-     # Authenticate Docker to Amazon ECR using AWS Tools for PowerShell
-     - name: Authenticate to Amazon ECR
-       shell: pwsh
-       run: |
-         (Get-ECRLoginCommand -Region ${{ eu-north-1 }}).Password | docker login --username AWS --password-stdin ${{ 637423323200.dkr.ecr.eu-north-1.amazonaws.com }}
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest  # PowerShell requires a Windows environment
+    steps:
+      # Checkout the code from the GitHub repository
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-     # Build the Docker image
-     - name: Build Docker Image
-       run: |
-         docker build -t ${{ webapp }} .
+      # Install AWS Tools for PowerShell
+      - name: Install AWS Tools for PowerShell
+        run: |
+          Install-Module -Name AWSPowerShell -Force -Scope CurrentUser
 
-     # Tag the Docker image
-     - name: Tag Docker Image
-       run: |
-         docker tag ${{ webapp }}:latest ${{ 637423323200.dkr.ecr.eu-north-1.amazonaws.com }}/{{ webapp }}:latest
+      # Authenticate Docker to Amazon ECR using AWS Tools for PowerShell
+      - name: Authenticate to Amazon ECR
+        shell: pwsh
+        run: |
+          (Get-ECRLoginCommand -Region ${{ env.AWS_REGION }}).Password | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
 
-     # Push the Docker image to Amazon ECR
-     - name: Push Docker Image to Amazon ECR
-       run: |
-         docker push ${{ 637423323200.dkr.ecr.eu-north-1.amazonaws.com }}/{{ webapp }}:latest
-         
+      # Build the Docker image
+      - name: Build Docker Image
+        run: |
+          docker build -t ${{ env.ECR_REPOSITORY }} .
+
+      # Tag the Docker image
+      - name: Tag Docker Image
+        run: |
+          docker tag ${{ env.ECR_REPOSITORY }}:latest ${{ env.ECR_REGISTRY }}/{{ env.ECR_REPOSITORY }}:latest
+
+      # Push the Docker image to Amazon ECR
+      - name: Push Docker Image to Amazon ECR
+        run: |
+          docker push ${{ env.ECR_REGISTRY }}/{{ env.ECR_REPOSITORY }}:latest
+
       # # Build a Docker image for the server application
       # - name: Build Docker Image
       #   # Build image with tag darshanzatakiya/sgp-ii:api
