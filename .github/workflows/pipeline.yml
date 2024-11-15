@@ -18,6 +18,9 @@ on:
 # Set environment variables
 env:
   MONGODB_URI: ${{ secrets.MONGODB_URI }}
+  AWS_REGION: eu-north-1  
+  ECR_REGISTRY: 637423323200.dkr.ecr.eu-north-1.amazonaws.com
+  ECR_REPOSITORY: webapp
 
 # This is the workflow that is being run.
 jobs:
@@ -25,6 +28,7 @@ jobs:
     # This is telling GitHub to run the workflow on the latest version of Ubuntu.
     runs-on: ubuntu-latest
     steps:
+
       # Checkout the code from the GitHub repository
       - name: Checkout code
         uses: actions/checkout@v3
@@ -42,20 +46,6 @@ jobs:
         run: |
           npm install
           npm run build
-
-# Set environment variables
-env:
-  AWS_REGION: eu-north-1  
-  ECR_REGISTRY: 637423323200.dkr.ecr.eu-north-1.amazonaws.com
-  ECR_REPOSITORY: webapp
-
-jobs:
-  build-and-deploy:
-    runs-on: windows-latest  # PowerShell requires a Windows environment
-    steps:
-      # Checkout the code from the GitHub repository
-      - name: Checkout code
-        uses: actions/checkout@v3
 
       # Install AWS Tools for PowerShell
       - name: Install AWS Tools for PowerShell
@@ -82,6 +72,8 @@ jobs:
       - name: Push Docker Image to Amazon ECR
         run: |
           docker push ${{ env.ECR_REGISTRY }}/{{ env.ECR_REPOSITORY }}:latest
+
+
 
       # # Build a Docker image for the server application
       # - name: Build Docker Image
