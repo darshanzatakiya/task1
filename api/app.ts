@@ -12,12 +12,7 @@ class App {
     public logger: APILogger;
     public taskController: TaskController;
 
-    /* Swagger files start */
-    // private swaggerFile: any = (process.cwd()+"/swagger/swagger.json");
-    // private swaggerData: any = fs.readFileSync(this.swaggerFile, 'utf8');
-    // private customCss: any = fs.readFileSync((process.cwd()+"/swagger/swagger.css"), 'utf8');
-    // private swaggerDocument = JSON.parse(this.swaggerData);
-    /* Swagger files end */
+  
 
 
     constructor() {
@@ -57,9 +52,6 @@ class App {
         this.express.get("/", (req, res, next) => {
             res.sendFile(path.join(__dirname, './ui/build/index.html'));
         });
-
-        // swagger docs
-        //this.express.use('/api/docs', swaggerUi.serve, swaggerUi.setup(this.swaggerDocument, null, null, this.customCss));
 
         // handle undefined routes
         this.express.use("*", (req, res, next) => {
