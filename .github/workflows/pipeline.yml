@@ -19,47 +19,40 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      # Checkout the latest code from the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Install and build client-side application
       - name: Install Client
         working-directory: ./ui
         run: |
           npm install
           npm run build
 
-      # Install and build server-side application
       - name: Install Server
         working-directory: ./api
         run: |
           npm install
           npm run build
 
-      # Install AWS Tools for PowerShell
-      - name: Install AWS Tools for PowerShell
-        shell: pwsh
-        run: |
-          Install-Module -Name AWSPowerShell -Force -Scope CurrentUser
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
 
-      # Authenticate Docker with Amazon ECR using AWS Tools for PowerShell
       - name: Authenticate to Amazon ECR
-        shell: pwsh
         run: |
-          (Get-ECRLoginCommand -Region ${{ env.AWS_REGION }}).Password | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
 
-      # Build Docker Image
       - name: Build Docker Image
         run: |
           docker build -t ${{ env.ECR_REPOSITORY }} .
 
-      # Tag Docker Image for ECR
       - name: Tag Docker Image
         run: |
           docker tag ${{ env.ECR_REPOSITORY }}:latest ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
 
-      # Push Docker Image to Amazon ECR
       - name: Push Docker Image to Amazon ECR
         run: |
           docker push ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
