@@ -34,15 +34,9 @@ jobs:
           npm install
           npm run build
 
-      - name: Install AWS Tools for PowerShell
-        shell: pwsh
-        run: |
-          Install-Module -Name AWSPowerShell -Force -Scope CurrentUser
-          
       - name: Authenticate to Amazon ECR
-        shell: pwsh
         run: |
-          (Get-ECRLoginCommand -Region ${{ env.AWS_REGION }}).Password | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ env.ECR_REGISTRY }}
 
       - name: Build Docker Image
         run: |
