@@ -8,6 +8,7 @@ on:
     branches:
       - main
 
+      
 env:
   MONGODB_URI: ${{ secrets.MONGODB_URI }}
   AWS_REGION: eu-north-1  
