@@ -11,9 +11,9 @@ on:
       
 env:
   MONGODB_URI: ${{ secrets.MONGODB_URI }}
-  AWS_REGION: eu-north-1  
-  ECR_REGISTRY: 637423323200.dkr.ecr.eu-north-1.amazonaws.com
-  ECR_REPOSITORY: webapp
+  AWS_REGION: eu-west-1  
+  ECR_REGISTRY: 637423323200.dkr.ecr.eu-west-1.amazonaws.com
+  ECR_REPOSITORY: task-repo
 
 jobs:
   build-and-deploy:
@@ -22,7 +22,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-        
+
       - name: Install Client
         working-directory: ./ui
         run: |
